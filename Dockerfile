@@ -19,6 +19,6 @@ COPY template /template/
 # https://github.com/merkatorgis/docker4gis/tree/npm-package/docs#extending-base-components.
 COPY conf/.docker4gis /
 COPY build.sh run.sh /.docker4gis/
-ONBUILD COPY conf /tmp/conf
+ONBUILD COPY conf /tmp/
 ONBUILD RUN touch /tmp/conf/args
 ONBUILD RUN cp /tmp/conf/args /.docker4gis/
