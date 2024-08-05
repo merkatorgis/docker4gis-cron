@@ -4,8 +4,8 @@ RUN apk update; apk add --no-cache \
     bash curl wget unzip grep sed
 
 # Create the file that /entrypoint will run at container startup. To create
-# startup jobs, use `cron.sh [SCHEDULE] startup SCRIPT [PARAMETER]...`; see
-# conf/cron.sh. 
+# startup jobs, use `cron.sh startup SCRIPT [PARAMETER...]`, or `cron.sh
+# SCHEDULE SCRIPT startup [PARAMETER...]`; see conf/cron.sh. 
 RUN echo '#!/bin/bash' >/startup.sh; \
     chmod +x /startup.sh
 
