@@ -14,6 +14,9 @@ if [ "$1" = 'cron' ]; then
 		/startup.sh
 	) &
 
+	# Run the mail sender daemon.
+	runner.sh postfix.sh
+
 	# Start cron in the foreground, logging verbosely to stdout.
 	exec crond -fl 0 -L /dev/stdout
 fi

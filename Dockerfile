@@ -4,15 +4,24 @@ RUN apk update; apk add --no-cache \
     bash curl wget unzip grep sed
 
 # Create the file that /entrypoint will run at container startup. To create
-# startup jobs, use `cron.sh [SCHEDULE] startup SCRIPT [PARAMETER]...`; see
-# conf/cron.sh. 
-RUN echo '#!/bin/bash' >/startup.sh; \
-    chmod +x /startup.sh
+# startup jobs, use `cron.sh startup SCRIPT [PARAMETER]...`, or `cron.sh
+# SCHEDULE SCRIPT startup [PARAMETER]...`; see conf/cron.sh. 
+RUN startup=/startup.sh; \
+    echo '#!/bin/bash' >"$startup"; \
+    echo 'set -x' >>"$startup"; \
+    chmod +x "$startup"
 
 # Allow configuration before things start up.
 COPY conf/entrypoint /
 ENTRYPOINT ["/entrypoint"]
 CMD ["cron"]
+
+# Install the cron.sh utility.
+COPY conf/cron.sh /usr/local/bin/
+
+# Install the bats plugin.
+COPY conf/.plugins/bats /tmp/bats
+RUN /tmp/bats/install.sh
 
 # Set install time variables for the timezone plugin.
 ONBUILD ARG TZ
@@ -45,12 +54,13 @@ ONBUILD ENV PGUSER=${PGUSER}
 ONBUILD ARG PGPASSWORD
 ONBUILD ENV PGPASSWORD=${PGPASSWORD}
 
+# Install the mail plugin.
+COPY conf/.plugins/mail /tmp/mail
+RUN /tmp/mail/install.sh
+
 # This may come in handy.
 ONBUILD ARG DOCKER_USER
 ONBUILD ENV DOCKER_USER=$DOCKER_USER
-
-# Install the cron.sh utility.
-COPY conf/cron.sh /usr/local/bin/
 
 # Extension template, as required by `dg component`.
 COPY template /template/
