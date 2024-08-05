@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -x
 
 # e.g. '* * * * *' (or 'startup')
 schedule=$1

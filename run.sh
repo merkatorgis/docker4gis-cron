@@ -16,6 +16,7 @@ mkdir -p "$RUNNER"
 docker container run --restart "$RESTART" --name "$CONTAINER" \
 	-e DOCKER_ENV="$DOCKER_ENV" \
 	-e DEBUG="$DEBUG" \
+	-e POSTFIX_DOMAIN="$POSTFIX_DOMAIN" \
 	--mount type=bind,source="$FILEPORT",target=/fileport \
 	--mount type=bind,source="$FILEPORT/..",target=/fileport/root \
 	--mount type=bind,source="$RUNNER",target=/runner \
