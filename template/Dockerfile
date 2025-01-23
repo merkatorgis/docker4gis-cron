@@ -1,4 +1,4 @@
-FROM docker4gis/cron:v0.0.7
+FROM docker4gis/cron:v0.0.8
 
 RUN cron.sh '* * * * *' /tmp/conf/example.sh
 
